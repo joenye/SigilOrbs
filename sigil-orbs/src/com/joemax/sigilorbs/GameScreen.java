@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
 	// global game-specific variables
 	public static final float SCREEN_WIDTH = 480;
 	public static final float SCREEN_HEIGHT = 800;
-	public static final float NEWROW_INTERVAL = 10;
+	public static final float NEWROW_INTERVAL = 0.2f;
 	public static final int ORBS_PER_ROW = 8;
 	public static final int NUM_STARTING_ROWS = 3;
 	// flicker orb
@@ -49,6 +49,10 @@ public class GameScreen implements Screen {
 	// flag to indicate whether the game is paused or not
 	boolean isGameRunning = false;
 
+	// used for framerate throttling
+	long lastRender;
+	long now;
+
 	/**
 	 * Constructor method for game screen
 	 */
@@ -60,7 +64,7 @@ public class GameScreen implements Screen {
 		flicker = new Flicker(Colour.getRandom());
 		newRowTime = NEWROW_INTERVAL;
 		touchPos = new Vector3();
-		gameSpeedMultiplier = 1;
+		gameSpeedMultiplier = 1f;
 		isGameRunning = true;
 		// Gdx.input.setInputProcessor(new GameInput());
 		createNewRows(NUM_STARTING_ROWS);
@@ -123,14 +127,37 @@ public class GameScreen implements Screen {
 			// attempt to fire flicker
 			if (flicker.isPressed()) {
 				flicker.setPressed(false);
-				if (flicker.getY() > Flicker.defaultY + 30) {
+				if (flicker.getY() > (Flicker.defaultY + 30)) {
 					flicker.setFired(true);
 					System.out.println("Flicker fired!");
+					// calculate velocity
+					float xDistance = touchPos.x - Flicker.defaultX;
+					float yDistance = touchPos.y - Flicker.defaultY;
+					flicker.setXVelocity(xDistance);
+					flicker.setYVelocity(yDistance);
 				}
 				// failed flick - reset flicker - [insert interpolation later]
 				else {
 					flicker.reset(false);
 				}
+			}
+		}
+
+		/**
+		 * (3) LOGIC STAGE
+		 */
+		// update flicker if fired
+		if (flicker.isFired()) {
+			flicker.setX(flicker.getX() + (flicker.getXVelocity() / 8f));
+			flicker.setY(flicker.getY() + (flicker.getYVelocity() / 12f));
+			if (flicker.getX() <= 0) {
+				flicker.setXVelocity(flicker.getXVelocity() * -1);
+			}
+			if (flicker.getX() >= (SCREEN_WIDTH - Flicker.ORB_WIDTH)) {
+				flicker.setXVelocity(flicker.getXVelocity() * -1);
+			}
+			if (flicker.getY() >= SCREEN_HEIGHT) {
+				flicker.reset(true);
 			}
 		}
 
@@ -141,10 +168,36 @@ public class GameScreen implements Screen {
 			newRowTime += (NEWROW_INTERVAL * gameSpeedMultiplier);
 		}
 
+		// delete orbs if they reach bottom
+		iter = orbs.iterator();
+		while (iter.hasNext()) {
+			Orb orb = iter.next();
+			if (orb.getY() <= (3 * Orb.ORB_HEIGHT))
+				iter.remove();
+		}
+
 		// keeps a track of how long the game has been running
 		if (isGameRunning)
 			timeRunning += (TimeUtils.nanoTime() - lastRenderTime);
 		lastRenderTime = TimeUtils.nanoTime();
+		throttleFrameRate();
+	}
+
+	/**
+	 * Throttle the game's frame rate to ~33fps
+	 * 
+	 */
+	private void throttleFrameRate() {
+		// throttle frame rate
+		now = System.nanoTime();
+		if (now - lastRender < 30000000) {
+			try {
+				Thread.sleep(30 - (now - lastRender) / 1000000);
+			} catch (InterruptedException e) {
+			}
+		}
+		lastRender = now;
+
 	}
 
 	/**

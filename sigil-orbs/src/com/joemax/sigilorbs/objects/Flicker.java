@@ -17,6 +17,8 @@ public class Flicker extends Orb {
 	// indicates whether the flicker orb is currently pressed or not
 	private boolean isPressed;
 	private boolean isFired;
+	private float xVelocity;
+	private float yVelocity;
 
 	public Flicker(Colour orbColour) {
 		super(orbColour, defaultX, defaultY);
@@ -34,6 +36,10 @@ public class Flicker extends Orb {
 		setY(defaultY);
 		if (isNewColour)
 			setOrbColour(Colour.getRandom());
+		setXVelocity(0);
+		setYVelocity(0);
+		setFired(false);
+		setPressed(false);
 	}
 
 	public boolean isPressed() {
@@ -50,5 +56,21 @@ public class Flicker extends Orb {
 
 	public void setFired(boolean isFired) {
 		this.isFired = isFired;
+	}
+	
+	public void setXVelocity(float newXVelocity) {
+		xVelocity = newXVelocity;
+	}
+	
+	public void setYVelocity(float newYVelocity) {
+		yVelocity = newYVelocity;
+	}
+	
+	public float getXVelocity() {
+		return xVelocity;
+	}
+	
+	public float getYVelocity() {
+		return yVelocity;
 	}
 }
