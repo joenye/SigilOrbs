@@ -2,6 +2,7 @@ package com.joemax.sigilorbs.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Orb class
@@ -75,6 +76,10 @@ public class Orb {
 	public Colour getOrbColour() {
 		return orbColour;
 	}
+	
+	void setOrbColour(Colour newColour) {
+		orbColour = newColour;	
+	}
 
 	public Texture getOrbTexture() {
 		switch (orbColour.getValue()) {
@@ -92,5 +97,13 @@ public class Orb {
 			return blueOrb;
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns the bounds of the orb in rectangle form
+	 * @return
+	 */
+	public Rectangle getBounds() {
+		return new Rectangle(getX(), getY(), Orb.ORB_WIDTH, ORB_HEIGHT);
 	}
 }
