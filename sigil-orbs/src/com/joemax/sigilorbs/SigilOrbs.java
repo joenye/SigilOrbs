@@ -5,10 +5,11 @@ import com.badlogic.gdx.Game;
 /**
  * The main project class containing global variables and handling the various
  * services that persist throughout the game.
+ * 
  * @author Joseph Prokopyszyn
- *
+ * 
  */
-public class SigilOrbs extends Game {	
+public class SigilOrbs extends Game {
 
 	@Override
 	public void create() {

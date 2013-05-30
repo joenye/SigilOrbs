@@ -76,9 +76,9 @@ public class Orb {
 	public Colour getOrbColour() {
 		return orbColour;
 	}
-	
+
 	void setOrbColour(Colour newColour) {
-		orbColour = newColour;	
+		orbColour = newColour;
 	}
 
 	public Texture getOrbTexture() {
@@ -98,9 +98,10 @@ public class Orb {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the bounds of the orb in rectangle form
+	 * 
 	 * @return
 	 */
 	public Rectangle getBounds() {

@@ -57,19 +57,19 @@ public class Flicker extends Orb {
 	public void setFired(boolean isFired) {
 		this.isFired = isFired;
 	}
-	
+
 	public void setXVelocity(float newXVelocity) {
 		xVelocity = newXVelocity;
 	}
-	
+
 	public void setYVelocity(float newYVelocity) {
 		yVelocity = newYVelocity;
 	}
-	
+
 	public float getXVelocity() {
 		return xVelocity;
 	}
-	
+
 	public float getYVelocity() {
 		return yVelocity;
 	}

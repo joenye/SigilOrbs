@@ -10,7 +10,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 480;
 		cfg.height = 800;
-		
+
 		new LwjglApplication(new SigilOrbs(), cfg);
 	}
 }

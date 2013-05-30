@@ -1,6 +1,5 @@
 d::0:application/unknown
 d:data:0:application/unknown
-i:data/libgdx.png:54931:image/png
 i:data/orb1.png:4813:image/png
 i:data/orb2.png:4742:image/png
 i:data/orb3.png:4786:image/png
