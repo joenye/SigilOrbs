@@ -1,4 +1,0 @@
-SigilOrbs
-=========
-
-Sigil: Orbs
